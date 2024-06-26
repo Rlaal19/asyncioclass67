@@ -1,6 +1,8 @@
 # running a function with arguments in another thread
-from time import sleep,ctime
+
+from time import sleep, ctime
 from threading import Thread
+
 # a custom function that blocks for a moment
 def task(sleep_time, message):
     # block for a moment
