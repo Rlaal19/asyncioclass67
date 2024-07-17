@@ -5,10 +5,10 @@ import asyncio
 async def task_coro(food):
     # generate a random value between 0 and 1
     value = 1+random()
+    print(f'>Microwave {food}: Cooking  {value} s')
     # block for a moment
     await asyncio.sleep(value)
     # report the value
-    print(f'>Microwave {food}: Cooking  {value} s')
     return food,value
 
 # main coroutine
@@ -21,8 +21,8 @@ async def main():
     done, pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
 
     # wait for all remaining tasks to complete and print their times
-    for task in pending:
-        food, time = await task
+    # for task in pending:
+    #     food, time = await task
     # get the first task to complete
     first = done.pop()
     first_food, first_time = await first
