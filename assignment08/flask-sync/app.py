@@ -10,6 +10,7 @@ app = Flask(__name__)
 def get_pokemon(url):
     print(f"{time.ctime()} - get {url}")
     resp = requests.get(url)
+    
     pokemon = resp.json()
 
     return pokemon
