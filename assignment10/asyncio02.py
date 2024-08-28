@@ -1,51 +1,64 @@
-# example of using an asyncio queue without blocking
+# example of using an asyncio queue
 from random import random
 import asyncio
- 
-# coroutine to generate work
+import time
+
+# corotine to generate work
 async def producer(queue):
     print('Producer: Running')
-    # generate work
+    start = time.time()
+    # gernerate work
     for i in range(10):
-        # generate a value
+        # generate value
         value = i
         # block to simulate work
         sleeptime = random()
-        print(f"> Producer {value} sleep {sleeptime}")
+        print(f'> Producer {value} sleep {sleeptime}')
         await asyncio.sleep(sleeptime)
         # add to the queue
-        print(f"> Producer put {value}")
+        print(f'> Producer put {value}')
         await queue.put(value)
-    # send an all done signal
+    # send all done signal
     await queue.put(None)
     print('Producer: Done')
- 
-# coroutine to consume work
+    end = time.time()
+    producer_time = end - start
+    print(f'Producer time => {producer_time}')
+    return producer_time
+
+# corotine to cosumer work
 async def consumer(queue):
     print('Consumer: Running')
-    # consume work
+    start = time.time()
+    # cosumer work
     while True:
         # get a unit of work without blocking
         try:
             item = queue.get_nowait()
         except asyncio.QueueEmpty:
-            print('Consumer: got nothing, waiting a while...')
+            print('Cosumer: got nothing, waiting a while...')
             await asyncio.sleep(0.5)
             continue
-        # check for stop
+        # check for stop signal
         if item is None:
             break
         # report
         print(f'\t> Consumer got {item}')
-    # all done
+    # print all done
     print('Consumer: Done')
- 
-# entry point coroutine
+    end = time.time()
+    consumer_time = end - start
+    print(f'Consumer time => {consumer_time}')
+    return consumer_time
+
+# entry point corotine
 async def main():
-    # create the shared queue
+    # create the share queue
     queue = asyncio.Queue()
-    # run the producer and consumers
-    await asyncio.gather(producer(queue), consumer(queue))
- 
-# start the asyncio program
-asyncio.run(main())
+    # run the producer and customer
+    producer_time,consumer_time = await asyncio.gather(producer(queue),consumer(queue))
+    total = producer_time+consumer_time
+    print(f"\n\n Total time =>", total, "seconds.")
+
+# start the asyncio
+asyncio.run(main()) 
