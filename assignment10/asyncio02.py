@@ -24,7 +24,6 @@ async def producer(queue):
     end = time.time()
     producer_time = end - start
     print(f'Producer time => {producer_time}')
-    return producer_time
 
 # corotine to cosumer work
 async def consumer(queue):
@@ -49,16 +48,15 @@ async def consumer(queue):
     end = time.time()
     consumer_time = end - start
     print(f'Consumer time => {consumer_time}')
-    return consumer_time
 
 # entry point corotine
 async def main():
+    start= time.time()
     # create the share queue
     queue = asyncio.Queue()
     # run the producer and customer
-    producer_time,consumer_time = await asyncio.gather(producer(queue),consumer(queue))
-    total = producer_time+consumer_time
-    print(f"\n\n Total time =>", total, "seconds.")
+    await asyncio.gather(producer(queue),consumer(queue))
+    print(f"\n\n Time finish in =>", {time.time()-start}, "seconds.")
 
 # start the asyncio
 asyncio.run(main()) 
