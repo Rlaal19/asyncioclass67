@@ -21,8 +21,8 @@ async def checkout_customer(queue: Queue, cashier_number: int):
     cashier_take = {"id" : cashier_number,"customer":0,"time":0}
     while not queue.empty():
         customer: Customer = await queue.get()
-        cashier_take['customer'] += 1
         customer_start_time = time.perf_counter()
+        cashier_take['customer'] += 1
         print(f"The Cashier_ {cashier_number}"
               f" will checkout Customer_ {customer.customer_id}")
         for product in customer.products:
@@ -35,7 +35,7 @@ async def checkout_customer(queue: Queue, cashier_number: int):
                   f" will checkout Customer_ {customer.customer_id}"
                   f" Product_ {product.product_name}"
                   f" in {product.checkout_time} secs")
-            await asyncio.sleep(product.checkout_time)
+            await asyncio.sleep(product_take_time)
             cashier_take["time"] += product_take_time
         print(f"The Cashier_ {cashier_number}"
               f" finish checkout Customer_ {customer.customer_id}"
