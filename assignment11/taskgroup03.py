@@ -77,7 +77,7 @@ async def main():
     customer_queue = Queue(5)
     customer_start_time = time.perf_counter()
     async with asyncio.TaskGroup() as group:
-        customer_group = group.create_task(customer_generation(customer_queue,20))
+        customer_group = group.create_task(customer_generation(customer_queue,10))
         cashiers_group = [group.create_task(checkout_customer(customer_queue,i)) for i in range(5)] 
 
     print("-"*20)
