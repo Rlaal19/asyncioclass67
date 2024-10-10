@@ -22,6 +22,7 @@ async def checkout_customer(queue: Queue, cashier_number: int):
     while not queue.empty():
         customer: Customer = await queue.get()
         customer_start_time = time.perf_counter()
+        
         cashier_take['customer'] += 1
         print(f"The Cashier_ {cashier_number}"
               f" will checkout Customer_ {customer.customer_id}")
